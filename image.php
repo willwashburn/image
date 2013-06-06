@@ -1,6 +1,7 @@
 <?php
 
     namespace willwashburn;
+
     /**
      * Image Class
      * If the image is in the ball park, just soft resize (within 100px) just send back width/height aspect ratio
@@ -43,17 +44,16 @@
          *
          */
 
-        public $image_source, $src, $original_height, $original_width, $offset_top, $offset_left, $parent_div_style,$target_height, $target_width;
+        public $image_source, $src, $original_height, $original_width, $offset_top, $offset_left, $parent_div_style, $target_height, $target_width;
         protected $path_to_images_folder, $temp_folder, $destination_folder, $is_square;
 
         // Clean this
         public $image;
         public $image_type;
 
-        /*
+        /**
          * Constructor
-         * @use create the object
-         * @oa Will
+         * @author  Will
          *
          * set the image source
          * check if it exists
@@ -78,9 +78,9 @@
 
             /// Test if the image is square
             if ($this->original_width == $this->original_height) {
-                $this->is_square = TRUE;
+                $this->is_square = true;
             } else {
-                $this->is_square = FALSE;
+                $this->is_square = false;
             }
 
             $this->offset_left      = 0;
@@ -90,27 +90,31 @@
 
         }
 
-        /*
+        /**
          * Render
          * @author Will
          *
          * returns html of the image
          *
          */
-        public function render() {
+        public function render()
+        {
 
-            $html = '<img '.$this->img_attributes().' />';
+            $html = '<img ' . $this->img_attributes() . ' />';
+
             return $html;
         }
 
-        /*
-        * Display attributes
-        * @use returns img tag attributes to display based on what you need
-        * @oa  Will
-        *
-        * @param return_as string | string or array
-        *
-        */
+        /**
+         * Display attributes
+         * Returns img tag attributes to display based on what you need
+         * @author Will
+         *
+         * @param string $return_as
+         * @internal param string $return_as or array
+         *
+         * @return array|bool|string
+         */
         public function img_attributes($return_as = 'string')
         {
 
@@ -137,16 +141,16 @@
                     break;
             }
 
-            return FALSE;
+            return false;
         }
 
-        /*
+        /**
          * Set Width
-         * @use aspect ratio set the new h/w
-         * @oa Will
+         * Aspect ratio set the new h/w
+         * @author Will
          *
+         * @notes
          * Doesn't actually change the size of the file
-         *
          * overrides set_height if called after
          *
          */
@@ -154,32 +158,32 @@
         {
             $this->target_width  = $target_width;
             $this->target_height = $this->aspect_ratio_scale($target_width, $this->original_width, $this->original_height);
+            
+            return $this;
 
         }
 
-        /*
+        /**
          * Set Height
-         * @use aspect ratio set the new w/h
-         * @oa Will
-         *
-         * Same as set width
+         * Aspect ratio set the new w/h
+         * @author Will
          *
          */
         public function set_height($target_height)
         {
             $this->target_height = $target_height;
             $this->target_width  = $this->aspect_ratio_scale($target_height, $this->original_height, $this->original_width);
+            
+            return $this;
         }
 
-        /*
+        /**
          * Fit to square
-         * @use turns a non square image, fits it inside square { MAGIC! }
-         * @oa  Will
-         *
-         *
+         * Make a non square image fit inside a square { MAGIC! }
+         * @author  Will
          *
          */
-        public function fit_to_box($width, $height = FALSE, $position = 'center', $fill_type = 'fill')
+        public function fit_to_box($width, $height = false, $position = 'center', $fill_type = 'fill')
         {
             //Reset the offsets
             $this->offset_left = 0;
@@ -228,18 +232,18 @@
             $target_height_difference = abs($height - $this->target_height);
             $target_width_difference  = abs($width - $this->target_width);
 
-            $center_vertically   = FALSE;
-            $center_horizontally = FALSE;
+            $center_vertically   = false;
+            $center_horizontally = false;
             $divide_by           = 2;
 
             switch ($position) {
                 case 'center':
-                    $center_horizontally = TRUE;
-                    $center_vertically   = TRUE;
+                    $center_horizontally = true;
+                    $center_vertically   = true;
                     break;
                 case 'top center':
                 case 'center top':
-                    $center_horizontally = TRUE;
+                    $center_horizontally = true;
                     break;
                 case 'center left':
                 case 'left center':
@@ -247,18 +251,18 @@
                     break;
                 case 'center right':
                 case 'right center':
-                    $center_horizontally = TRUE;
+                    $center_horizontally = true;
                     $divide_by           = 1;
                     break;
                 case 'bottom center':
                 case 'center bottom':
-                    $center_vertically = TRUE;
+                    $center_vertically = true;
                     $divide_by         = 1;
                     break;
                 case 'bottom right':
                 case 'right bottom':
-                    $center_horizontally = TRUE;
-                    $center_vertically   = TRUE;
+                    $center_horizontally = true;
+                    $center_vertically   = true;
                     $divide_by           = 1;
                     break;
             }
@@ -274,37 +278,39 @@
 
             $this->parent_div_style = 'width:' . $width . 'px; height:' . $height . 'px; overflow:hidden;';
 
-            return TRUE;
+            return $this;
         }
 
         #### Misc. Functions ###
 
-        /*
+        /**
          * Height and Width
-         * @use return the height and width of the image
-         * @oa Will
+         * Return the height and width of the image
+         * @author Will
          *
          */
         public function height_and_width()
         {
-            $return = FALSE;
+            $return = false;
 
             @$original_dimensions = getimagesize($this->image_source); //quiet the errors here because we're going to catch
 
             if (!$original_dimensions) {
-                throw new Exception('Image could not be found at '.$this->src);
+                throw new ImageException('Image could not be found at ' . $this->src, 404);
             } else {
 
                 $return['width']  = $original_dimensions[0];
                 $return['height'] = $original_dimensions[1];
                 $return['string'] = $original_dimensions[3];
             }
+
             return $return;
         }
 
-        /*
+        /**
          * Aspect Ratio Scale
-         * @use find the missing y size based on new x and originals
+         * find the missing y size based on new x and originals
+         * @author  Will
          *
          * simple math brahspeh
          *
@@ -313,7 +319,7 @@
         {
 
             if ($original_x == 0 || $original_y == 0 || $set_x == 0) {
-                throw new Exception('The image cant be a length of 0');
+                throw new ImageException('The image cant be a length of 0');
             } else {
 
                 $ratio  = $set_x / $original_x;
@@ -323,5 +329,18 @@
             }
         }
 
+
+    }
+
+    /**
+     * Class ImageException
+     * @package willwashburn
+     *
+     * Codes
+     * 0 -Error
+     * 404 - Image not found
+     */
+    class ImageException extends \Exception
+    {
 
     }
