@@ -1,10 +1,8 @@
-<?
+<?php
 
-    /*
+    namespace willwashburn;
+    /**
      * Image Class
-     * @use handle images, minimum width, resize, crop, smart crop _etc
-     * @oa Will
-     *
      * If the image is in the ball park, just soft resize (within 100px) just send back width/height aspect ratio
      *
      */
