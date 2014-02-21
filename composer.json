@@ -1,0 +1,43 @@
+{
+    "name": "willwashburn/Image",
+    "version": "0.0.2",
+    "type": "library",
+    "description": "Image ",
+    "keywords": ["image size"],
+    "homepage": "https://github.com/willwashburn/Image",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Will Washburn",
+            "homepage": "https://github.com/willwashburn/Image"
+        }
+    ],
+    "repositories": {
+        "fastimage": {
+            "type": "package",
+            "package": {
+                "name": "tommoor/fastimage",
+                "version": "1.0.0",
+                "source": {
+                    "url": "https://github.com/tommoor/fastimage",
+                    "type": "git",
+                    "reference": "5c57f515cf161aa6768c0e736a2c05c162a5728a"
+                }
+            }
+        }
+    },
+    "require": {
+        "php": ">=5.1",
+        "lib-curl": "*",
+        "tommoor/fastimage": "1.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "willwashburn": "lib/",
+            "FastImage":"vendor/tommoor/fastimage"
+        }
+    }
+}
