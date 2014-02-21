@@ -27,7 +27,7 @@
         }
     },
     "require": {
-        "php": ">=5.1",
+        "php": ">=5.3",
         "lib-curl": "*",
         "tommoor/fastimage": "1.0.0"
     },

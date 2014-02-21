@@ -7,17 +7,21 @@ use FastImage;
  *
  * @package willwashburn
  */
-class FastImageTransport implements Transport {
+class FastImageTransport implements Transport
+{
 
     /**
      * @param $image_url
      *
      * @return array
      */
-    public function getDimensions($image_url) {
+    public function getDimensions($image_url)
+    {
 
-        $image= new FastImage($image_url);
-        return $image->getSize();
+        $image = new FastImage($image_url);
 
+        list($width, $height) = $image->getSize();
+
+        return array('width' => $width, 'height' => $height);
     }
 }

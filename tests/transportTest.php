@@ -1,5 +1,7 @@
 <?php
 
+use willwashburn\FastImageTransport;
+
 /**
  * Class imageTest
  *
@@ -10,11 +12,26 @@ class transportTest extends PHPUnit_Framework_TestCase
     /**
      * @author  Will
      */
-    public function testGetDimensionsIncludesHeight() {
+    public function imagesToTestWith()
+    {
+        return array(
+            'images' => array(
+                'http://www.willwashburn.com/img/milkman.png')
+        );
+    }
 
-       $image = new \willwashburn\FastImageTransport;
-       $dimensions = $image->getDimensions('http://www.willwashburn.com/img/milkman.png');
+    /**
+     * @author       Will
+     *
+     * @dataProvider imagesToTestWith
+     */
+    public function testGetDimensionsIncludesHeightAndWidth($url)
+    {
 
-        $this->assertArrayHasKey('height',$dimensions);
+        $image      = new \willwashburn\FastImageTransport;
+        $dimensions = $image->getDimensions($url);
+
+        $this->assertArrayHasKey('height', $dimensions);
+        $this->assertArrayHasKey('width', $dimensions);
     }
 }
